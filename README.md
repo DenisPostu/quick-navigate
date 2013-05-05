@@ -12,7 +12,7 @@ To use Quick Navigate:
 1. Choose _File > Install Extension_
 2. Enter this URL: _https://github.com/jeffslofish/quick-navigate_
 3. Click _Install_!
-
+4. Reload Brackets.
 
 ### License
 MIT-licensed -- see `main.js` for details.
