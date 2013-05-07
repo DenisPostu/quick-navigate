@@ -37,7 +37,8 @@ define(function (require, exports, module) {
     var cursorHistory = [],
         editHistory = [],
         posInCursorHistoryArr = 0,
-        posInEditHistoryArr = 0;
+        posInEditHistoryArr = 0,
+        MAX_HISTORY_LENGTH = 25;
     
     // Used for toolbar buttons
     var $nextEditButton,
@@ -148,18 +149,34 @@ define(function (require, exports, module) {
         return false;
     }
     
+    /**
+    * Push the current location onto the appropriate array
+    * @param Object 
+    * @param Array
+    * @return Integer the new current position in the array
+    */
+    function manageHistory(loc, historyArr) {
+        if (historyArr.length >= MAX_HISTORY_LENGTH) {
+            historyArr.splice(0, 1);
+        }
+        
+        historyArr.push(loc);
+        return cursorHistory.length - 1;
+    }
+    
     // When the current document changes, add a ref and register
     // a "change" event handler which will fire when the user
     // modifies the document.
     $(DocumentManager).on("currentDocumentChange", function () {
         var currentDocument = DocumentManager.getCurrentDocument();
         var currentEditor = EditorManager.getCurrentFullEditor();
+         
         
         // Listen for document editing changes and keep track of them
         $(currentDocument).on("change", function () {
             var cursor = currentEditor.getCursorPos(true);
-            editHistory.push({doc: currentDocument, pos: cursor});
-            posInEditHistoryArr = editHistory.length - 1;
+            var loc = ({doc: currentDocument, pos: cursor});
+            posInEditHistoryArr = manageHistory(loc, editHistory);
         });
         
         // Listen for cursor position changes and  keep track of them
@@ -171,17 +188,12 @@ define(function (require, exports, module) {
             // Since we don't want to 'double-track' or changes to the cursor position
             // when we are going through t he cursor position history, we will ignore
             // those positions that are already in the history
-            //
-            // @todo: Make this search only recent history, or find a better algorithm
-            //        for when to save the change in cursor location
             for (i = cursorHistory.length - 1; i >= 0; i--) {
                 if (locationsEqual(cursorHistory[i], loc)) {
                     return;
                 }
             }
-            
-            cursorHistory.push(loc);
-            posInCursorHistoryArr = cursorHistory.length - 1;
+            posInCursorHistoryArr = manageHistory(loc, cursorHistory);
         });
     });
 

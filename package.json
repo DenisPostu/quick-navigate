@@ -2,7 +2,7 @@
     "name": "jeffslofish-quick-navigate",
     "title": "Quick Navigate",
     "description": "Lets the user navigate back to previous cursor and edit locations quickly.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Jeffrey Fisher <jeffslofish@gmail.com> (http://slofish.net)",
     "license": "MIT",
     "categories": "editing"
