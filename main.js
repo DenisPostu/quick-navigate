@@ -197,11 +197,6 @@ define(function (require, exports, module) {
         });
     });
 
-    // Adds the buttons to the toolbar when the app is ready.
-    AppInit.appReady(function () {
-        addToolbarButton("<",   "Goto Previous Edit",           "gotoPrevEdit",         handleGotoPrevEdit);
-        addToolbarButton(">",   "Goto Next Edit",               "gotoNextEdit",         handleGotoNextEdit);
-        addToolbarButton("<<",  "Goto Previous Cursor Change",  "gotoPrevCursorChange", handleGotoPrevCursorChange);
-        addToolbarButton(">>",  "Goto Next Cursor Change",      "gotoNextCursorChange", handleGotoNextCursorChange);
-    });
+    CommandManager.register("Goto Previous Cursor Change", "quickNavigate.gotoPrevCursorChange", handleGotoPrevCursorChange);
+    CommandManager.register("Goto Next Cursor Change", "quickNavigate.gotoNextCursorChange", handleGotoNextCursorChange);
 });
